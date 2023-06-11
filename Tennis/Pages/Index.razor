@@ -1,0 +1,58 @@
+﻿@page "/"
+
+<h3>Tennis</h3>
+
+<h1>@Score()</h1>
+
+
+
+@if (!APlayerWonMatchWithTwoMoreSetWins() || !APlayerWonMatchAfterThreeSetWins())
+{
+	<button onclick="@PlayerAWinsAPoint">A</button>
+	<button onclick="@PlayerBWinsAPoint">B</button>
+}
+
+<button onclick="@Reset">Reset</button>
+
+
+@code
+{
+	public string Score()
+	{
+
+		if (APlayerWonWithoutGameGoingIntoDouce() || APlayerWonAfterGameWentIntoDouce())
+		{
+			PlayerWithMostPoints().Games++;
+
+			if (APlayerWonSetAfterSixGameWinsWithTwoOrMoreGameWins() || APlayerWonSetAfterTieBreak())
+			{
+				PlayerWithMostGameWinsDuringASet().Sets++;
+
+				if (APlayerWonMatchWithTwoMoreSetWins() || APlayerWonMatchAfterThreeSetWins())
+				{
+					return $"{PlayerWithMostSetWins().Name} is the winner";
+				}
+
+				ResetPoints();
+				ResetGames();
+				return $"Player A: SET:{PlayerA.Sets} GAME:{PlayerA.Games} POINT: {PlayerA.Points} ---  Player B: SET:{PlayerB.Sets} GAME:{PlayerB.Games} POINT: {PlayerB.Points}";
+			}
+
+			ResetPoints();
+			return $"Player A: SET:{PlayerA.Sets} GAME:{PlayerA.Games} POINT: LOVE  ---  Player B: SET:{PlayerB.Sets} GAME:{PlayerB.Games} POINT: LOVE";
+		}
+
+		if (IsItDouce())
+		{
+			return $"Player A: SET:{PlayerA.Sets} GAME:{PlayerA.Games} POINT: 40 - Deuce -  Player B: SET:{PlayerB.Sets} GAME:{PlayerB.Games} POINT: 40";
+		}
+
+		if (APlayerHasAdvantage())
+		{
+			return $"Player A: SET:{PlayerA.Sets} GAME:{PlayerA.Games} POINT: 40 - {PlayerWithMostPoints().Name} has Advantage  -  Player B: SET:{PlayerB.Sets} GAME:{PlayerB.Games} POINT: 40";
+		}
+
+		return $"Player A: SET:{PlayerA.Sets} GAME:{PlayerA.Games} POINT: {ScoreTypes[PlayerA.Points]}  ---  Player B: SET:{PlayerB.Sets} GAME:{PlayerB.Games} POINT: {ScoreTypes[PlayerB.Points]}";
+	}
+
+}
