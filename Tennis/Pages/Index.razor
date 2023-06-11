@@ -1,18 +1,24 @@
 ﻿@page "/"
 
-<h3>Tennis</h3>
+<h5 >Tennis ScoreBoard</h5>
 
-<h1>@Score()</h1>
+<h2>@Score()</h2>
 
 
 
 @if (!APlayerWonMatchWithTwoMoreSetWins() || !APlayerWonMatchAfterThreeSetWins())
 {
-	<button onclick="@PlayerAWinsAPoint">A</button>
-	<button onclick="@PlayerBWinsAPoint">B</button>
+	<div>
+		<button class="btn btn-primary m-2" onclick="@PlayerAWinsAPoint">A</button>
+		<button class="btn btn-primary m-2" onclick="@PlayerBWinsAPoint">B</button>
+	</div>
 }
 
-<button onclick="@Reset">Reset</button>
+
+<div>
+	<button class="btn btn-danger m-4" onclick="@Reset">Reset</button>
+</div>
+
 
 
 @code
